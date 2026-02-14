@@ -7,3 +7,4 @@ joblib
 matplotlib
 seaborn
 altair>=4.2.0,<5
+standard-imghdr
