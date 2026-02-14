@@ -251,15 +251,24 @@ with tab2:
 with tab3:
     st.subheader("Model Performance Comparison")
     
-    best_idx = metrics_df['F1 Score'].idxmax()
+    df_display = metrics_df.reset_index(drop=True)
+    best_idx = df_display['F1 Score'].idxmax()
 
     styled = (
-        metrics_df.style
-        .format("{:.4f}", subset=['Accuracy','AUC','Precision','Recall','F1 Score','MCC Score'])
-        .apply(lambda x: ['background-color: #d4edda' if x.name == best_idx else '' for _ in x], axis=1)
+    df_display.style
+    .format("{:.4f}", subset=['Accuracy','AUC','Precision','Recall','F1 Score','MCC Score'])
+    .apply(
+        lambda x: ['background-color: #d4edda' if x.name == best_idx else '' for _ in x],
+        axis=1
     )
+    .set_table_styles([
+        {'selector': 'th.row_heading', 'props': [('display', 'none')]},
+        {'selector': 'th.blank', 'props': [('display', 'none')]}
+    ])
+)
 
-    st.dataframe(styled)
+    st.table(styled)
+
 
     st.markdown("---")
 

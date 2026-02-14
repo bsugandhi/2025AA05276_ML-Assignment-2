@@ -56,18 +56,16 @@ def load_and_preprocess_data(filepath):
     joblib.dump(encoders, 'model/encoders.pkl')
     joblib.dump(scaler, 'model/scaler.pkl')
     joblib.dump(X.columns.tolist(), 'model/feature_names.pkl')
-
-    print(f"Columns in the training data {X_scaled.columns}...")
     
     return X_scaled, y
 
 def train_models(X_train, y_train):
     models = {
-        'Logistic Regression': LogisticRegression(random_state=42),
-        'Decision Tree': DecisionTreeClassifier(random_state=42),
+        'Logistic Regression': LogisticRegression(class_weight='balanced', random_state=42),
+        'Decision Tree': DecisionTreeClassifier(class_weight='balanced', random_state=42),
         'kNN': KNeighborsClassifier(),
         'Naive Bayes': GaussianNB(),
-        'Random Forest': RandomForestClassifier(random_state=42),
+        'Random Forest': RandomForestClassifier(class_weight='balanced', random_state=42),
         'XGBoost': XGBClassifier(use_label_encoder=False, eval_metric='logloss', random_state=42)
     }
     
