@@ -253,6 +253,8 @@ with tab3:
     
     df_display = metrics_df.reset_index(drop=True)
     best_idx = df_display['F1 Score'].idxmax()
+    best_model_row = df_display.loc[best_idx]
+    st.info(f"🏆 Best Performing Model: **{best_model_row['ML Model Name']}** with F1 Score of **{best_model_row['F1 Score']:.4f}**")
 
     styled = (
     df_display.style
@@ -274,9 +276,6 @@ with tab3:
 
     st.subheader("Confusion Matrices")
 
-    with open("model/confusion_matrix.json", "r") as f:
-        cms = json.load(f)
-
     cols = st.columns(2)
 
     for i, model_name in enumerate(model_options):
@@ -292,13 +291,36 @@ with tab3:
     st.write("### Detailed Observations")
     
     obs_data = {
-        "Logistic Regression": "Good baseline, interpretable, performs well on linearly separable data.",
-        "Decision Tree": "Captures non-linear patterns but prone to overfitting without pruning.",
-        "kNN": "Sensitive to feature scaling. Computationally expensive at inference time.",
-        "Naive Bayes": "Fast and effective for high-dimensional data, assumes independence.",
-        "Random Forest": "Robust, handles non-linearities well, reduces overfitting via bagging.",
-        "XGBoost": "Often state-of-the-art accuracy, handles complex relationships via boosting."
+        "Logistic Regression": (
+            "Strong overall performer with the highest MCC and AUC, showing the best ability to separate Pass and Fail students. "
+            "Provides a good balance between precision and recall and remains highly interpretable."
+        ),
+
+        "Decision Tree": (
+            "Reasonable performance with good F1 score, but lower AUC and MCC indicate weaker generalization. "
+            "Tends to make more classification errors compared to other models."
+        ),
+
+        "kNN": (
+            "Achieves very high recall by predicting most students as Pass, but struggles to correctly identify Fail cases. "
+            "This leads to a lower MCC despite a strong F1 score."
+        ),
+
+        "Naive Bayes": (
+            "Highest accuracy and F1 score among all models, with strong recall and stable performance. "
+            "Provides a good balance, though slightly less effective than Logistic Regression in handling class imbalance."
+        ),
+
+        "Random Forest": (
+            "Very high recall and strong F1 score, indicating excellent detection of passing students. "
+            "However, it is slightly biased toward the majority class, reducing MCC compared to Logistic Regression."
+        ),
+
+        "XGBoost": (
+            "Well-balanced model with strong performance across all metrics, including high F1, AUC, and MCC. "
+            "Effectively captures complex patterns while maintaining good overall stability."
+        )
     }
-    
+
     for model, obs in obs_data.items():
         st.write(f"- **{model}**: {obs}")

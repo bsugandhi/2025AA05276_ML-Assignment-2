@@ -128,10 +128,6 @@ def evaluate_models(models, X_test, y_test):
             'F1 Score': f1,
             'MCC Score': mcc
         })
-
-     # Save all confusion matrices to one JSON file
-    with open('model/confusion_matrix.json', "w") as f:
-        json.dump(confusion_matrices, f, indent=4)
         
     return pd.DataFrame(results)
 
