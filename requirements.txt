@@ -6,4 +6,5 @@ streamlit
 joblib
 matplotlib
 seaborn
+altair
 vega
