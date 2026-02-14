@@ -1,7 +1,10 @@
 import pandas as pd
 import numpy as np
 import os
+import json
 import joblib
+import matplotlib.pyplot as plt
+import seaborn as sns
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.linear_model import LogisticRegression
@@ -30,7 +33,7 @@ def load_and_preprocess_data(filepath):
     if target not in df.columns:
         raise ValueError(f"Target column '{target}' not found in dataset")
     
-    X = df.drop(columns=[target, 'performance_category']) # performance_category is derived/leaky usually, or alternate target
+    X = df.drop(columns=[target, 'final_score','performance_category']) # performance_category is derived/leaky usually, or alternate target
     y = df[target]
     
     # Handle categorical variables
@@ -53,6 +56,8 @@ def load_and_preprocess_data(filepath):
     joblib.dump(encoders, 'model/encoders.pkl')
     joblib.dump(scaler, 'model/scaler.pkl')
     joblib.dump(X.columns.tolist(), 'model/feature_names.pkl')
+
+    print(f"Columns in the training data {X_scaled.columns}...")
     
     return X_scaled, y
 
@@ -80,6 +85,7 @@ def train_models(X_train, y_train):
 
 def evaluate_models(models, X_test, y_test):
     results = []
+    confusion_matrices = {}
     
     for name, model in models.items():
         y_pred = model.predict(X_test)
@@ -91,6 +97,29 @@ def evaluate_models(models, X_test, y_test):
         rec = recall_score(y_test, y_pred, zero_division=0)
         f1 = f1_score(y_test, y_pred, zero_division=0)
         mcc = matthews_corrcoef(y_test, y_pred)
+
+        # Confusion Matrix
+        cm = confusion_matrix(y_test, y_pred)
+
+        plt.figure(figsize=(4,3))
+        sns.heatmap(
+            cm,
+            annot=True,
+            fmt="d",
+            cmap="Blues",
+            xticklabels=["Pred 0", "Pred 1",],
+            yticklabels=["Actual 0", "Actual 1"]
+        )
+
+        plt.xlabel("Predicted")
+        plt.ylabel("Actual")
+
+        os.makedirs("model/cm_images", exist_ok=True)
+        
+        filename = f"model/cm_images/{name.replace(' ', '_').lower()}.png"
+        plt.tight_layout()
+        plt.savefig(filename, dpi=150)
+        plt.close()
         
         results.append({
             'ML Model Name': name,
@@ -101,6 +130,10 @@ def evaluate_models(models, X_test, y_test):
             'F1 Score': f1,
             'MCC Score': mcc
         })
+
+     # Save all confusion matrices to one JSON file
+    with open('model/confusion_matrix.json', "w") as f:
+        json.dump(confusion_matrices, f, indent=4)
         
     return pd.DataFrame(results)
 
