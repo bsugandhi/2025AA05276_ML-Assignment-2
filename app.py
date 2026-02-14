@@ -281,7 +281,7 @@ with tab3:
 
         with cols[i % 2]:
             if os.path.exists(img_path):
-                st.image(img_path, caption=model_name, use_container_width=True)
+               st.image(img_path, caption=model_name, use_column_width=True)
             else:
                 st.warning(f"Image not found for {model_name}")
         
