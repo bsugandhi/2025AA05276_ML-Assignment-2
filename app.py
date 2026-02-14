@@ -63,7 +63,10 @@ def load_artifacts():
     encoders = joblib.load('model/encoders.pkl')
     scaler = joblib.load('model/scaler.pkl')
     feature_names = joblib.load('model/feature_names.pkl')
-    metrics_df = pd.read_csv('model/metrics.csv')
+    metrics_df = pd.read_csv('model/metrics.csv', encoding='utf-8')
+
+    metrics_df['ML Model Name'] = metrics_df['ML Model Name'].astype(str)
+
 
     models = {}
     for name in model_options:
