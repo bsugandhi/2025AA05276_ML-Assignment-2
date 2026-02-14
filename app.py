@@ -292,35 +292,36 @@ with tab3:
     
     obs_data = {
         "Logistic Regression": (
-            "Strong overall performer with the highest MCC and AUC, showing the best ability to separate Pass and Fail students. "
-            "Provides a good balance between precision and recall and remains highly interpretable."
+            "Strong and reliable performer with the highest MCC (0.65) and AUC (~0.97), showing the best ability to separate Pass and Fail cases. "
+            "Confusion matrix indicates balanced predictions, though it misses some passing students. Overall, the most interpretable and stable model."
         ),
 
         "Decision Tree": (
-            "Reasonable performance with good F1 score, but lower AUC and MCC indicate weaker generalization. "
-            "Tends to make more classification errors compared to other models."
+            "Improved performance with good Accuracy (~0.92) and F1 (~0.95). Detects both Pass and Fail cases better than before, "
+            "but lower AUC suggests weaker generalization compared to Logistic Regression and ensemble models."
         ),
 
         "kNN": (
-            "Achieves very high recall by predicting most students as Pass, but struggles to correctly identify Fail cases. "
-            "This leads to a lower MCC despite a strong F1 score."
+            "Very high recall (~0.99) but still biased toward predicting Pass. Confusion matrix shows many Fail students classified as Pass, "
+            "which explains the lower MCC (~0.34) despite a good F1 score."
         ),
 
         "Naive Bayes": (
-            "Highest accuracy and F1 score among all models, with strong recall and stable performance. "
-            "Provides a good balance, though slightly less effective than Logistic Regression in handling class imbalance."
+            "One of the best overall models with high Accuracy (~0.93), strong F1 (~0.96), and good MCC (~0.62). "
+            "Confusion matrix shows very few missed Pass cases and reasonable Fail detection, giving stable performance."
         ),
 
         "Random Forest": (
-            "Very high recall and strong F1 score, indicating excellent detection of passing students. "
-            "However, it is slightly biased toward the majority class, reducing MCC compared to Logistic Regression."
+            "Extremely high recall (~0.997), meaning it detects almost all passing students. However, it struggles more with Fail detection, "
+            "which lowers MCC (~0.52). Strong model but slightly biased toward the majority class."
         ),
 
         "XGBoost": (
-            "Well-balanced model with strong performance across all metrics, including high F1, AUC, and MCC. "
-            "Effectively captures complex patterns while maintaining good overall stability."
+            "Well-balanced performance across all metrics with high F1 (~0.96), strong AUC (~0.96), and good MCC (~0.62). "
+            "Confusion matrix shows better Fail detection than Random Forest, making it one of the most balanced ensemble models."
         )
     }
+
 
     for model, obs in obs_data.items():
         st.write(f"- **{model}**: {obs}")
