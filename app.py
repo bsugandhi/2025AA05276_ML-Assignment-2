@@ -15,35 +15,9 @@ st.set_page_config(
     layout="wide"
 )
 
-# Custom CSS for aesthetics
-# st.markdown("""
-# <style>
-#     .main {
-#         background-color: #f5f7f9;
-#     }
-#     .stButton>button {
-#         width: 100%;
-#         border-radius: 5px;
-#         height: 3em;
-#         background-color: #4CAF50;
-#         color: white;
-#     }
-#     h1, h2, h3 {
-#         color: #2c3e50;
-#     }
-#     .metric-card {
-#         background-color: white;
-#         padding: 20px;
-#         border-radius: 10px;
-#         box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-#         text-align: center;
-#     }
-# </style>
-# """, unsafe_allow_html=True)
-
 # Title
 st.title("🎓 Student Performance Classification")
-st.markdown("Predict if a student will **Pass** or **Fail** based on their academic and AI usage data.")
+st.markdown("Predict student pass/fail outcomes using academic performance metrics, behavioral factors, and AI usage insights")
 
 # Sidebar - Model Selection
 st.sidebar.header("Model Configuration")
