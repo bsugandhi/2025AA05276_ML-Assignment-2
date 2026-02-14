@@ -188,8 +188,7 @@ with tab2:
                  improvement = st.number_input("Improvement Rate", -100.0, 100.0, 5.0)
                  tutoring = st.number_input("Tutoring Hours", 0.0, 50.0, 0.0)
                  participation = st.number_input("Class Participation", 0.0, 100.0, 80.0)
-                 final_score = st.number_input("Final Score", 0.0, 100.0, 80.0)
-
+            
         submitted = st.form_submit_button("Predict Result")
         
         if submitted:
@@ -216,8 +215,7 @@ with tab2:
                 'sleep_hours': sleep_hours,
                 'social_media_hours': social_media,
                 'tutoring_hours': tutoring,
-                'class_participation_score': participation,
-                'final_score': final_score
+                'class_participation_score': participation
             }
             
             
