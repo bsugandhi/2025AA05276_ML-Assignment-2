@@ -270,7 +270,11 @@ with tab3:
     ])
 )
 
-    st.table(styled)
+    st.markdown(
+        styled.to_html(index=False),
+        unsafe_allow_html=True
+    )
+
 
 
     st.markdown("---")
