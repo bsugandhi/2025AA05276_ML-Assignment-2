@@ -31,6 +31,9 @@ The dataset is imbalanced:
 
 Because of this imbalance, **F1 Score** was selected as the primary metric for model comparison.
 
+**Dataset Source**  
+  This project uses the publicly available dataset from Kaggle:  https://www.kaggle.com/datasets/ankushnarwade/ai-impact-on-student-performance
+
 ---
 
 ## c. Models Used
@@ -47,8 +50,18 @@ Six classification algorithms were implemented and compared:
 ### Handling Class Imbalance
 - Logistic Regression, Decision Tree, Random Forest:
   - `class_weight='balanced'`
----
 
+**Live App**  
+  Try the deployed application here: https://aistudylens.streamlit.app/
+  
+  This interactive web application allows users to:
+- Predict whether a student will pass or fail based on academic behavior and AI usage
+- Try single student predictions using input fields
+- Upload CSV files for batch predictions
+- Compare multiple machine learning models and their performance
+
+---
+  
 ## d. Metrics Comparison (Final Results)
 
 **Best model is selected based on F1 Score** since it balances Precision and Recall for an imbalanced dataset.
@@ -130,4 +143,11 @@ Reasons:
 - XGBoost delivered highly balanced performance across all metrics.
 - Random Forest showed exceptional recall.
 - kNN struggled with detecting failing students due to class imbalance.
+
+## 🔗 Project Links
+
+- **Live App:**  
+  Try the deployed application here:  
+  https://aistudylens.streamlit.app/
+
 
