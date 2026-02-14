@@ -10,56 +10,24 @@ This system helps:
 
 ---
 
-## Dataset Features Description
+## b. Dataset Features Description
 
-The dataset contains a mix of academic behavior, AI usage patterns, lifestyle indicators, and performance outcomes.
+The dataset contains student study behavior, AI usage patterns, academic indicators, and lifestyle factors.
 
-### 📘 Study Behavior
-- **study_hours_per_day** – Average number of hours a student studies daily.
-- **study_consistency_index** – Consistency in study habits over time (higher = more consistent).
-- **concept_understanding_score** – Self-assessed or teacher-assessed understanding of key concepts.
-- **improvement_rate** – Rate of academic improvement over the semester.
+### Key Feature Groups
+- **Study & Academic Behavior:** study_hours_per_day, study_consistency_index, concept_understanding_score, improvement_rate, last_exam_score, assignment_scores_avg, attendance_percentage, class_participation_score, tutoring_hours  
+- **AI Usage:** uses_ai, ai_usage_time_minutes, ai_tools_used, ai_usage_purpose, ai_dependency_score, ai_generated_content_percentage, ai_prompts_per_week, ai_ethics_score  
+- **Lifestyle:** sleep_hours, social_media_hours  
 
-### 🤖 AI Usage Features
-- **uses_ai** – Binary indicator of whether the student uses AI tools (1 = Yes, 0 = No).
-- **ai_usage_time_minutes** – Total time spent using AI tools.
-- **ai_tools_used** – Names/types of AI tools used (e.g., ChatGPT, Copilot).
-- **ai_usage_purpose** – Purpose of AI usage (Exam Prep, Notes, Coding, etc.).
-- **ai_dependency_score** – Level of reliance on AI tools.
-- **ai_generated_content_percentage** – Percentage of work generated using AI.
-- **ai_prompts_per_week** – Number of AI queries/prompts submitted weekly.
-- **ai_ethics_score** – Score indicating responsible and ethical AI usage.
+### Target Variables
+- **passed** – Binary outcome (1 = Pass, 0 = Fail)  
 
-### 📊 Academic Performance Indicators
-- **last_exam_score** – Marks obtained in the most recent exam.
-- **assignment_scores_avg** – Average assignment score.
-- **attendance_percentage** – Class attendance rate.
-- **class_participation_score** – Participation level in classroom activities.
-- **tutoring_hours** – Time spent in extra tutoring.
-
-### 🧠 Lifestyle Factors
-- **sleep_hours** – Average sleep duration per day.
-- **social_media_hours** – Daily time spent on social media.
-
-### 🎯 Outcome Variables
-- **final_score** – Overall academic score combining exams, assignments, and participation.  
-  *(Removed from training to prevent data leakage.)*
-
-- **passed** – Target variable used for classification:
-  - 1 → Pass  
-  - 0 → Fail
-
-- **performance_category** – Multi-class performance label (Low, Medium, High).  
-  *(Not used in this binary classification task.)*
-
-
-### Important Note (Data Leakage Prevention)
-The feature `final_score` was removed because it directly determines pass/fail status and would lead to unrealistic model performance.
+_Note: The feature `final_score` was removed because it directly determines pass/fail status and would lead to unrealistic model performance. Also removed two unrelated features named as `student_id` and `performance_category`_
 
 ### Class Distribution
 The dataset is imbalanced:
-- ~90% Pass
-- ~10% Fail
+- ~89% Pass
+- ~11% Fail
 
 Because of this imbalance, **F1 Score** was selected as the primary metric for model comparison.
 
@@ -90,7 +58,7 @@ Six classification algorithms were implemented and compared:
 | Logistic Regression | 0.8997 | 0.9720 | 0.9891 | 0.8969 | 0.9407 | **0.6522** |
 | Decision Tree | 0.9154 | 0.7766 | 0.9495 | 0.9555 | 0.9525 | 0.5659 |
 | kNN | 0.9003 | 0.8448 | 0.9089 | 0.9866 | 0.9462 | 0.3448 |
-| **Naive Bayes** | **0.9335** | 0.9637 | 0.9396 | 0.9887 | **0.9635** | 0.6185 |
+| **Naive Bayes🏆** | **0.9335** | 0.9637 | 0.9396 | 0.9887 | **0.9635** | 0.6185 |
 | Random Forest | 0.9216 | 0.9594 | 0.9211 | **0.9972** | 0.9576 | 0.5245 |
 | XGBoost | 0.9292 | 0.9622 | 0.9490 | 0.9725 | 0.9606 | 0.6157 |
 
