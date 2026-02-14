@@ -63,7 +63,11 @@ def load_artifacts():
     encoders = joblib.load('model/encoders.pkl')
     scaler = joblib.load('model/scaler.pkl')
     feature_names = joblib.load('model/feature_names.pkl')
-    metrics_df = pd.read_csv('model/metrics.csv')
+    metrics_df = pd.read_csv('model/metrics.csv', encoding='utf-8)
+
+    for col in metrics_df.select_dtypes(include=['object']).columns:
+        metrics_df[col] = metrics_df[col].astype(str)
+
     
     models = {}
     for name in model_options:
@@ -250,7 +254,6 @@ with tab3:
     st.subheader("Model Performance Comparison")
     
     df_display = metrics_df.reset_index(drop=True).copy()
-    df_display['ML Model Name'] = df_display['ML Model Name'].astype(str)
     best_idx = df_display['F1 Score'].idxmax()
     best_model_row = df_display.loc[best_idx]
     st.info(f"🏆 Best Performing Model: **{best_model_row['ML Model Name']}** with F1 Score of **{best_model_row['F1 Score']:.4f}**")
