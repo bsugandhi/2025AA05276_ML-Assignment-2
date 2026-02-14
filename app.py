@@ -63,12 +63,8 @@ def load_artifacts():
     encoders = joblib.load('model/encoders.pkl')
     scaler = joblib.load('model/scaler.pkl')
     feature_names = joblib.load('model/feature_names.pkl')
-    metrics_df = pd.read_csv('model/metrics.csv', encoding='utf-8')
+    metrics_df = pd.read_csv('model/metrics.csv')
 
-    for col in metrics_df.select_dtypes(include=['object']).columns:
-        metrics_df[col] = metrics_df[col].astype(str)
-
-    
     models = {}
     for name in model_options:
         filename = f"model/{name.replace(' ', '_').lower()}.pkl"
