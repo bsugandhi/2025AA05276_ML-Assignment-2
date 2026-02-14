@@ -10,32 +10,48 @@ This system helps:
 
 ---
 
-## b. Dataset Description
+## Dataset Features Description
 
-The dataset contains multiple categories of features:
+The dataset contains a mix of academic behavior, AI usage patterns, lifestyle indicators, and performance outcomes.
 
-### Demographics
-- Age
-- Gender
-- Grade Level
+### 📘 Study Behavior
+- **study_hours_per_day** – Average number of hours a student studies daily.
+- **study_consistency_index** – Consistency in study habits over time (higher = more consistent).
+- **concept_understanding_score** – Self-assessed or teacher-assessed understanding of key concepts.
+- **improvement_rate** – Rate of academic improvement over the semester.
 
-### Academic Behavior
-- Study hours per day
-- Attendance percentage
-- Last exam score
-- Study consistency
-- Concept understanding score
+### 🤖 AI Usage Features
+- **uses_ai** – Binary indicator of whether the student uses AI tools (1 = Yes, 0 = No).
+- **ai_usage_time_minutes** – Total time spent using AI tools.
+- **ai_tools_used** – Names/types of AI tools used (e.g., ChatGPT, Copilot).
+- **ai_usage_purpose** – Purpose of AI usage (Exam Prep, Notes, Coding, etc.).
+- **ai_dependency_score** – Level of reliance on AI tools.
+- **ai_generated_content_percentage** – Percentage of work generated using AI.
+- **ai_prompts_per_week** – Number of AI queries/prompts submitted weekly.
+- **ai_ethics_score** – Score indicating responsible and ethical AI usage.
 
-### AI Usage
-- AI usage time
-- AI dependency score
-- AI usage purpose
-- AI ethics score
+### 📊 Academic Performance Indicators
+- **last_exam_score** – Marks obtained in the most recent exam.
+- **assignment_scores_avg** – Average assignment score.
+- **attendance_percentage** – Class attendance rate.
+- **class_participation_score** – Participation level in classroom activities.
+- **tutoring_hours** – Time spent in extra tutoring.
 
-### Target Variable
-- `passed`  
+### 🧠 Lifestyle Factors
+- **sleep_hours** – Average sleep duration per day.
+- **social_media_hours** – Daily time spent on social media.
+
+### 🎯 Outcome Variables
+- **final_score** – Overall academic score combining exams, assignments, and participation.  
+  *(Removed from training to prevent data leakage.)*
+
+- **passed** – Target variable used for classification:
   - 1 → Pass  
-  - 0 → Fail  
+  - 0 → Fail
+
+- **performance_category** – Multi-class performance label (Low, Medium, High).  
+  *(Not used in this binary classification task.)*
+
 
 ### Important Note (Data Leakage Prevention)
 The feature `final_score` was removed because it directly determines pass/fail status and would lead to unrealistic model performance.
