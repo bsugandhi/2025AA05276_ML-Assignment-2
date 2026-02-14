@@ -1,44 +1,149 @@
 # Student Performance Classification with AI Usage Analysis
 
 ## a. Problem Statement
-The goal of this project is to analyze student performance based on demographic, academic, and AI tool usage data. We aim to build a classification model that can predict whether a student will **Pass** or **Fail** (based on the `passed` binary indicator). This helps in identifying at-risk students and understanding how AI usage correlates with academic success.
+The goal of this project is to analyze student performance based on demographic, academic, and AI usage data. We build classification models to predict whether a student will **Pass** or **Fail** using a binary target variable (`passed`).  
+
+This system helps:
+- Identify students at academic risk
+- Understand how study behavior and AI usage relate to performance
+- Support early academic intervention strategies
+
+---
 
 ## b. Dataset Description
-The dataset contains information about students, including:
-- **Demographics**: Age, Gender, Grade Level.
-- **Academic Info**: Study hours, Attendance, Previous scores, etc.
-- **AI Usage**: Usage of AI tools, dependency scores, ethics scores, and purpose.
-- **Target**: `passed` (1 = Yes, 0 = No).
 
-**Key Features used**: `study_hours_per_day`, `attendance_percentage`, `last_exam_score`, `ai_dependency_score`, `ai_usage_time_minutes`, etc.
+The dataset contains multiple categories of features:
+
+### Demographics
+- Age
+- Gender
+- Grade Level
+
+### Academic Behavior
+- Study hours per day
+- Attendance percentage
+- Last exam score
+- Study consistency
+- Concept understanding score
+
+### AI Usage
+- AI usage time
+- AI dependency score
+- AI usage purpose
+- AI ethics score
+
+### Target Variable
+- `passed`  
+  - 1 → Pass  
+  - 0 → Fail  
+
+### Important Note (Data Leakage Prevention)
+The feature `final_score` was removed because it directly determines pass/fail status and would lead to unrealistic model performance.
+
+### Class Distribution
+The dataset is imbalanced:
+- ~90% Pass
+- ~10% Fail
+
+Because of this imbalance, **F1 Score** was selected as the primary metric for model comparison.
+
+---
 
 ## c. Models Used
-We implemented and evaluated the following 6 Machine Learning models:
-1.  **Logistic Regression**
-2.  **Decision Tree Classifier**
-3.  **K-Nearest Neighbor (kNN)**
-4.  **Naive Bayes (Gaussian)**
-5.  **Random Forest Classifier** (Ensemble)
-6.  **XGBoost Classifier** (Ensemble)
 
-### Metrics Comparison Table
+Six classification algorithms were implemented and compared:
+
+1. Logistic Regression  
+2. Decision Tree  
+3. K-Nearest Neighbors (kNN)  
+4. Naive Bayes (Gaussian)  
+5. Random Forest (Ensemble)  
+6. XGBoost (Ensemble)
+
+### Handling Class Imbalance
+- Logistic Regression, Decision Tree, Random Forest:
+  - `class_weight='balanced'`
+---
+
+## d. Metrics Comparison (Final Results)
+
+**Best model is selected based on F1 Score** since it balances Precision and Recall for an imbalanced dataset.
 
 | ML Model Name | Accuracy | AUC | Precision | Recall | F1 Score | MCC Score |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Logistic Regression** | 0.9975 | 0.9998 | 0.9972 | 1.0000 | 0.9986 | 0.9871 |
-| **Decision Tree** | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 |
-| **kNN** | 0.9231 | 0.9116 | 0.9272 | 0.9916 | 0.9583 | 0.5209 |
-| **Naive Bayes** | 0.9719 | 0.9963 | 0.9943 | 0.9741 | 0.9841 | 0.8681 |
-| **Random Forest** | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 |
-| **XGBoost** | 0.9975 | 1.0000 | 0.9979 | 0.9993 | 0.9986 | 0.9871 |
+| Logistic Regression | 0.8997 | 0.9720 | 0.9891 | 0.8969 | 0.9407 | **0.6522** |
+| Decision Tree | 0.9154 | 0.7766 | 0.9495 | 0.9555 | 0.9525 | 0.5659 |
+| kNN | 0.9003 | 0.8448 | 0.9089 | 0.9866 | 0.9462 | 0.3448 |
+| **Naive Bayes** | **0.9335** | 0.9637 | 0.9396 | 0.9887 | **0.9635** | 0.6185 |
+| Random Forest | 0.9216 | 0.9594 | 0.9211 | **0.9972** | 0.9576 | 0.5245 |
+| XGBoost | 0.9292 | 0.9622 | 0.9490 | 0.9725 | 0.9606 | 0.6157 |
 
-### Observations about Model Performance
+---
 
-1.  **Logistic Regression**: Excellent performance with near-perfect accuracy (99.75%). It suggests the data is linearly separable or features are highly predictive.
-2.  **Decision Tree**: Achieved a perfect score (1.0). While this indicates the model captured the patterns perfectly, it might be overfitted to the training data, though performance on the test set is also perfect here.
-3.  **kNN**: The lowest performer (92.3%) with a significantly lower MCC (0.52). Ideally, kNN struggles with higher dimensionality or irrelevant features without extensive feature selection.
-4.  **Naive Bayes**: Performs well (97.2%) but slightly worse than tree-based methods, likely due to the independence assumption not holding fully true for all features.
-5.  **Random Forest (Ensemble)**: Matches Decision Tree with perfect scores (1.0). As an ensemble method, it is generally more robust than a single tree, confirming the strong signal in the dataset.
-6.  **XGBoost (Ensemble)**: Exceptional performance (99.75%), effectively matching Logistic Regression. It handles complex relationships well and is very robust.
+## e. Observations About Model Performance
 
-**Conclusion**: The dataset features are highly predictive of the `passed` status. Tree-based models (Decision Tree, Random Forest) and XGBoost/Logistic Regression are all suitable choices. For deployability and interpretability, Logistic Regression or Random Forest are recommended.
+Since the dataset is imbalanced, **F1 Score** was used to determine the best model.
+
+### 🏆 Naive Bayes (Best Model – Highest F1 Score: 0.9635)
+- Highest accuracy and F1 score
+- Strong balance between precision and recall
+- Very stable performance across predictions
+- Detects most passing students while maintaining good fail detection
+
+### XGBoost
+- Very close to Naive Bayes in performance
+- Strong F1, AUC, and MCC
+- Well-balanced predictions
+- Captures complex patterns effectively
+
+### Random Forest
+- Extremely high recall (~0.997)
+- Detects almost all passing students
+- Slight bias toward predicting Pass reduces MCC
+
+### Logistic Regression
+- Highest MCC (0.65) and AUC (~0.97)
+- Best at separating Pass vs Fail classes
+- Very interpretable and stable
+- Slightly lower F1 compared to Naive Bayes
+
+### Decision Tree
+- Good F1 and accuracy
+- Reasonable balance in predictions
+- Lower AUC suggests weaker generalization
+
+### kNN
+- High recall but struggles to identify Fail cases
+- Lowest MCC
+- More biased toward majority class predictions
+
+---
+
+## f. Key Insights
+
+- Removing `final_score` prevented data leakage and produced realistic model results.
+- Class imbalance strongly influenced prediction behavior.
+- F1 Score proved to be the most suitable metric for model comparison.
+- Behavioral and academic history features are strong predictors of performance.
+- Ensemble models improved recall, while Naive Bayes and Logistic Regression showed strong overall balance.
+
+---
+
+## g. Final Conclusion
+
+Based on the chosen evaluation criterion (**F1 Score**):
+
+### 🏆 Best Model: Naive Bayes
+
+Reasons:
+- Highest F1 Score
+- Highest accuracy
+- Strong balance between precision and recall
+- Consistent and stable performance
+
+### Additional Insights
+- Logistic Regression achieved the highest MCC and AUC, showing excellent class separation.
+- XGBoost delivered highly balanced performance across all metrics.
+- Random Forest showed exceptional recall.
+- kNN struggled with detecting failing students due to class imbalance.
+
