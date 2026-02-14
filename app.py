@@ -67,6 +67,14 @@ tab1, tab2, tab3 = st.tabs(["📂 Batch Prediction", "📝 Single Prediction", "
 with tab1:
     st.subheader("Batch Prediction via CSV")
     uploaded_file = st.file_uploader("Upload CSV file", type=["csv"])
+
+    with open("test.csv", "rb") as f:
+        st.download_button(
+            label="📥 Download Sample Test CSV",
+            data=f,
+            file_name="test.csv",
+            mime="text/csv"
+        )
     
     if uploaded_file is not None:
         try:
@@ -80,7 +88,7 @@ with tab1:
                 batch_df = batch_df.drop(columns=['student_id'])
             
             # Handle potential target columns in upload (ignore them for prediction)
-            cols_to_drop = ['passed', 'performance_category']
+            cols_to_drop = ['passed', 'final_score', 'performance_category']
             batch_df = batch_df.drop(columns=[c for c in cols_to_drop if c in batch_df.columns])
             
             # Apply Encoders
