@@ -249,7 +249,8 @@ with tab2:
 with tab3:
     st.subheader("Model Performance Comparison")
     
-    df_display = metrics_df.reset_index(drop=True)
+    df_display = metrics_df.reset_index(drop=True).copy()
+    df_display['ML Model Name'] = df_display['ML Model Name'].astype(str)
     best_idx = df_display['F1 Score'].idxmax()
     best_model_row = df_display.loc[best_idx]
     st.info(f"🏆 Best Performing Model: **{best_model_row['ML Model Name']}** with F1 Score of **{best_model_row['F1 Score']:.4f}**")
