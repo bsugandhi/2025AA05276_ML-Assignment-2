@@ -68,16 +68,21 @@ tab1, tab2, tab3 = st.tabs(["📂 Batch Prediction", "📝 Single Prediction", "
 # --- TAB 1: Batch Prediction ---
 
 with tab1:
-    st.subheader("Batch Prediction via CSV")
-    uploaded_file = st.file_uploader("Upload CSV file", type=["csv"])
+    col1, col2 = st.columns([4, 1])
 
-    with open("test.csv", "rb") as f:
-        st.download_button(
-            label="📥 Download Sample Test CSV",
-            data=f,
-            file_name="test.csv",
-            mime="text/csv"
-        )
+    with col1:
+        st.subheader("Batch Prediction via CSV")
+
+    with col2:
+        with open("test.csv", "rb") as f:
+            st.download_button(
+                label="📥 Sample CSV",
+                data=f,
+                file_name="test.csv",
+                mime="text/csv"
+            )
+
+    uploaded_file = st.file_uploader("Upload CSV file", type=["csv"])
 
     if uploaded_file is not None:
         try:
