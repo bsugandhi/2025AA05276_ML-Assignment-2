@@ -1,10 +1,11 @@
-pandas
 numpy
 scikit-learn
 xgboost
-streamlit
 joblib
 matplotlib
 seaborn
 altair>=4.2.0,<5
 standard-imghdr
+streamlit >= 1.32
+pandas >= 2.1
+pyarrow >= 14
