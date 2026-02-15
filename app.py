@@ -83,8 +83,6 @@ with tab1:
             batch_df = pd.read_csv(uploaded_file)
             st.dataframe(batch_df.head().astype(str))
 
-            batch_df = batch_df.astype(str)
-
             original_batch_df = batch_df.copy()
 
             # Save target column (if present) for evaluation
