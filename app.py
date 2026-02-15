@@ -128,7 +128,14 @@ with tab1:
                 
 
                 st.write("### Prediction Results")
-                st.table(original_batch_df)
+                # st.table(original_batch_df)
+                st.dataframe(
+                    original_batch_df,
+                    use_container_width=True,
+                    height=450,
+                    hide_index=True
+                )
+
 
                 # Download predictions
                 csv = original_batch_df.to_csv(index=False).encode('utf-8')
