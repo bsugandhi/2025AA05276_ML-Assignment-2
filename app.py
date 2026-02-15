@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.metrics import confusion_matrix, classification_report, accuracy_score, roc_auc_score, precision_score, recall_score, f1_score, matthews_corrcoef
 
+
 # Page Config
 st.set_page_config(
     page_title="Student Performance Classifier",
@@ -60,10 +61,11 @@ except Exception as e:
     st.stop()
 
 # Tabs
-tab1, tab2, tab3 = st.tabs(["📂 Batch Prediction", "📝 Single Prediction", "📊 Model Evaluation"])
+tab1, tab2, tab3 = st.tabs(["📂 Batch Prediction", "📝 Single Prediction", "📊 Overal Evaluation"])
 
 
 # --- TAB 1: Batch Prediction ---
+
 with tab1:
     st.subheader("Batch Prediction via CSV")
     uploaded_file = st.file_uploader("Upload CSV file", type=["csv"])
@@ -75,49 +77,59 @@ with tab1:
             file_name="test.csv",
             mime="text/csv"
         )
-    
+
     if uploaded_file is not None:
         try:
             batch_df = pd.read_csv(uploaded_file)
             st.write("Preview of uploaded data:", batch_df.head())
-            
+
             original_batch_df = batch_df.copy()
-            
-            # Preprocessing
+
+            # Save target column (if present) for evaluation
+            true_target = None
+            if 'passed' in batch_df.columns:
+                true_target = batch_df['passed'].copy()
+
+            # ---------------- PREPROCESSING ----------------
             if 'student_id' in batch_df.columns:
                 batch_df = batch_df.drop(columns=['student_id'])
-            
-            # Handle potential target columns in upload (ignore them for prediction)
+
+            # Drop target-like columns for prediction
             cols_to_drop = ['passed', 'final_score', 'performance_category']
             batch_df = batch_df.drop(columns=[c for c in cols_to_drop if c in batch_df.columns])
-            
-            # Apply Encoders
+
+            # Apply encoders
             for col, le in encoders.items():
                 if col in batch_df.columns:
-                    # Handle unseen labels or conversion
-                    batch_df[col] = batch_df[col].astype(str).map(lambda x: x if x in le.classes_ else le.classes_[0]) # Simple fallback
+                    batch_df[col] = batch_df[col].astype(str).map(
+                        lambda x: x if x in le.classes_ else le.classes_[0]
+                    )
                     batch_df[col] = le.transform(batch_df[col])
-            
-            # Ensure columns match
-            # Fill missing cols with 0
+
+            # Ensure all model features exist
             for col in feature_names:
                 if col not in batch_df.columns:
                     batch_df[col] = 0
+
             batch_df = batch_df[feature_names]
-            
+
             # Scale
             batch_scaled = scaler.transform(batch_df)
-             
-            # Predict
+
+            # ---------------- PREDICTION ----------------
             if st.button("Generate Predictions"):
                 preds = current_model.predict(batch_scaled)
+
                 original_batch_df['Predicted_Pass'] = preds
-                original_batch_df['Predicted_Status'] = original_batch_df['Predicted_Pass'].map({1: 'Passed', 0: 'Failed'})
-                
+                original_batch_df['Predicted_Status'] = original_batch_df['Predicted_Pass'].map({
+                    1: 'Passed',
+                    0: 'Failed'
+                })
+
                 st.write("### Prediction Results")
                 st.dataframe(original_batch_df)
-                
-                # Download
+
+                # Download predictions
                 csv = original_batch_df.to_csv(index=False).encode('utf-8')
                 st.download_button(
                     "Download Predictions",
@@ -126,7 +138,74 @@ with tab1:
                     "text/csv",
                     key='download-csv'
                 )
-                
+
+                # ---------------- EVALUATION (ONLY IF TARGET EXISTS) ----------------
+                if true_target is not None:
+                    y_true = true_target
+                    y_pred = preds
+
+                    acc = accuracy_score(y_true, y_pred)
+                    prec = precision_score(y_true, y_pred)
+                    rec = recall_score(y_true, y_pred)
+                    f1 = f1_score(y_true, y_pred)
+
+                    # AUC (if model supports probabilities)
+                    try:
+                        y_prob = current_model.predict_proba(batch_scaled)[:, 1]
+                        auc = roc_auc_score(y_true, y_prob)
+                    except:
+                        auc = None
+
+                    st.markdown("---")
+
+
+                    col1, col2 = st.columns([2, 1])
+
+                    with col1:
+                        st.subheader("Evaluation Metrics")
+
+                        eval_metrics_df = pd.DataFrame({
+                            "Metric": ["Accuracy", "AUC", "Precision", "Recall", "F1 Score"],
+                            "Value": [acc, auc if auc else None, prec, rec, f1]
+                        })
+
+                        st.markdown(
+                            eval_metrics_df.style
+                            .format({"Value": "{:.4f}"})
+                            .hide(axis="index")
+                            .set_table_attributes('class="compact-table" style="width:80%;height:320px;"')
+                            .to_html(classes="compact-table"),
+                            unsafe_allow_html=True
+                        )
+
+                    with col2:
+                        st.subheader("Confusion Matrix")
+
+                        cm = confusion_matrix(y_true, y_pred)
+
+                        fig, ax = plt.subplots(figsize=(2.6, 2.2))
+                        sns.heatmap(
+                            cm,
+                            annot=True,
+                            fmt='d',
+                            cmap="Blues",
+                            xticklabels=["Failed", "Passed"],
+                            yticklabels=["Failed", "Passed"],
+                            cbar=False,
+                            ax=ax
+                        )
+
+                        ax.set_xlabel("Predicted", fontsize=9)
+                        ax.set_ylabel("Actual", fontsize=9)
+                        ax.tick_params(labelsize=8)
+
+                        plt.tight_layout(pad=0.5)
+                        st.pyplot(fig, use_container_width=False)
+
+                   
+                else:
+                    st.info("Upload file with 'passed' column to view evaluation metrics and confusion matrix.")
+
         except Exception as e:
             st.error(f"Error processing file: {e}")
 
