@@ -204,7 +204,7 @@ with tab1:
                         ax.tick_params(labelsize=8)
 
                         plt.tight_layout(pad=0.5)
-                        st.pyplot(fig, use_container_width=False)
+                        st.pyplot(fig)
 
                    
                 else:
