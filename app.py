@@ -38,7 +38,12 @@ def load_artifacts():
     encoders = joblib.load('model/encoders.pkl')
     scaler = joblib.load('model/scaler.pkl')
     feature_names = joblib.load('model/feature_names.pkl')
-    metrics_df = pd.read_csv('model/metrics.csv', encoding='utf-8')
+    metrics_df = pd.read_csv(
+        'model/metrics.csv',
+        encoding='utf-8',
+        dtype=str
+    ).astype(str)
+
 
     metrics_df['ML Model Name'] = metrics_df['ML Model Name'].astype(str)
 
@@ -81,7 +86,9 @@ with tab1:
     if uploaded_file is not None:
         try:
             batch_df = pd.read_csv(uploaded_file)
-            st.write("Preview of uploaded data:", batch_df.head())
+            st.dataframe(batch_df.head().astype(str))
+
+            batch_df = batch_df.astype(str)
 
             original_batch_df = batch_df.copy()
 
