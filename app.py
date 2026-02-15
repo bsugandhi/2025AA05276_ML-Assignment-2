@@ -126,9 +126,8 @@ with tab1:
                     0: 'Failed'
                 })
                 
-                for col in original_batch_df.columns:
-                    if original_batch_df[col].dtype == 'object':
-                        original_batch_df[col] = original_batch_df[col].astype(str)
+                original_batch_df = original_batch_df.convert_dtypes()
+                original_batch_df = original_batch_df.astype(str)
 
                 st.write("### Prediction Results")
                 st.dataframe(original_batch_df)
