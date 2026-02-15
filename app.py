@@ -126,10 +126,8 @@ with tab1:
                     0: 'Failed'
                 })
             
-                original_batch_df = original_batch_df.astype(str)
-
                 st.write("### Prediction Results")
-                st.dataframe(original_batch_df)
+                st.dataframe(original_batch_df.to_pandas())
 
                 # Download predictions
                 csv = original_batch_df.to_csv(index=False).encode('utf-8')
