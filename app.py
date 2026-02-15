@@ -11,10 +11,48 @@ from sklearn.metrics import confusion_matrix, classification_report, accuracy_sc
 
 # Page Config
 st.set_page_config(
-    page_title="Student Performance Classifier",
+    page_title="Student Performance AI Predictor | Pass/Fail Classifier",
     page_icon="🎓",
-    layout="wide"
+    layout="wide",
+    initial_sidebar_state="expanded"
 )
+
+
+st.markdown("""
+<style>
+
+/* Force dark theme background */
+html, body, [data-testid="stAppViewContainer"] {
+    background-color: #0e1117;
+    color: #FAFAFA;
+}
+
+/* Sidebar dark */
+[data-testid="stSidebar"] {
+    background-color: #111827;
+}
+
+/* Hide Streamlit header */
+header {visibility: hidden;}
+
+/* Hide hamburger menu */
+[data-testid="collapsedControl"] {display: none}
+
+/* Hide footer */
+footer {visibility: hidden;}
+
+/* Hide "Made with Streamlit" */
+#MainMenu {visibility: hidden;}
+
+/* Remove top padding */
+.block-container {
+    padding-top: 1rem;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
+
 
 # Title
 st.title("🎓 Student Performance Classification")
