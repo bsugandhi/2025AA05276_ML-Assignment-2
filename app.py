@@ -17,43 +17,6 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-
-st.markdown("""
-<style>
-
-/* Force dark theme background */
-html, body, [data-testid="stAppViewContainer"] {
-    background-color: #0e1117;
-    color: #FAFAFA;
-}
-
-/* Sidebar dark */
-[data-testid="stSidebar"] {
-    background-color: #111827;
-}
-
-/* Hide Streamlit header */
-header {visibility: hidden;}
-
-/* Hide hamburger menu */
-[data-testid="collapsedControl"] {display: none}
-
-/* Hide footer */
-footer {visibility: hidden;}
-
-/* Hide "Made with Streamlit" */
-#MainMenu {visibility: hidden;}
-
-/* Remove top padding */
-.block-container {
-    padding-top: 1rem;
-}
-
-</style>
-""", unsafe_allow_html=True)
-
-
-
 # Title
 st.title("🎓 Student Performance Classification")
 st.markdown("Predict student pass/fail outcomes using academic performance metrics, behavioral factors, and AI usage insights")
