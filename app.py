@@ -125,6 +125,8 @@ with tab1:
                     1: 'Passed',
                     0: 'Failed'
                 })
+            
+                original_batch_df = original_batch_df.astype(str)
 
                 st.write("### Prediction Results")
                 st.dataframe(original_batch_df)
