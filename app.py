@@ -181,7 +181,7 @@ with tab1:
                             eval_metrics_df.style
                             .format({"Value": "{:.4f}"})
                             .hide(axis="index")
-                            .set_table_attributes('class="compact-table" style="width:80%;height:320px;"')
+                            .set_table_attributes('class="compact-table" style="width:80%;height:270px;"')
                             .to_html(classes="compact-table"),
                             unsafe_allow_html=True
                         )
