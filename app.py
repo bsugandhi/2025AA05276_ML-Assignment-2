@@ -125,9 +125,13 @@ with tab1:
                     1: 'Passed',
                     0: 'Failed'
                 })
-            
+                
+                for col in original_batch_df.columns:
+                    if original_batch_df[col].dtype == 'object':
+                        original_batch_df[col] = original_batch_df[col].astype(str)
+
                 st.write("### Prediction Results")
-                st.dataframe(original_batch_df.to_pandas())
+                st.dataframe(original_batch_df)
 
                 # Download predictions
                 csv = original_batch_df.to_csv(index=False).encode('utf-8')
